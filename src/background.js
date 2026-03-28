@@ -60,7 +60,7 @@ async function checkAndUpdate() {
     return;
   }
 
-  if (hanwhaGame.statusCode === "PLAYING") {
+  if (hanwhaGame.statusCode === "STARTED") {
     const detail = await fetchGameDetail(hanwhaGame.gameId);
     updateBadge(hanwhaGame);
     await checkScoreChange(hanwhaGame, detail);

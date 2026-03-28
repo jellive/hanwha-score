@@ -39,7 +39,7 @@ async function loadGame() {
       const detail = await fetchGameDetail(game.gameId);
       renderGame(game, detail);
       // 경기 중이면 30초마다 자동 갱신
-      if (game.statusCode === "PLAYING") {
+      if (game.statusCode === "STARTED") {
         startRefresh();
       } else {
         stopRefresh();
@@ -112,7 +112,7 @@ function renderGame(game, detail) {
   );
   setText(
     "status-indicator",
-    game.statusCode === "PLAYING"
+    game.statusCode === "STARTED"
       ? `🟢 ${gameData?.currentInning || game.statusInfo}`
       : "🔴 종료",
   );

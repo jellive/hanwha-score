@@ -32,7 +32,7 @@ The background service worker is the core — it drives polling, badge updates, 
 ## Key Domain Concepts
 
 - **Team code `HH`**: Hanwha Eagles identifier in Naver API. `findHanwhaGame()` filters by this.
-- **statusCode**: `BEFORE` | `PLAYING` | `RESULT` — drives polling frequency and badge behavior.
+- **statusCode**: `BEFORE` | `STARTED` | `RESULT` — drives polling frequency and badge behavior.
 - **Score format**: Always `"{hanwha}:{opponent}"` regardless of home/away. The `isHome` check normalizes this.
 - **Badge color**: `#F37321` (Hanwha orange) when winning/tied, `#888888` (gray) when losing.
 
@@ -76,7 +76,7 @@ https://sports-phinf.pstatic.net/team/kbo/default/{teamCode}.png
 | --------------------------------- | ---------- | ---------------------------- |
 | Night (00:00-11:00)               | No polling | Skip entirely                |
 | Pre-game (11:00-start)            | 10 min     | Game list API only           |
-| Playing (`PLAYING`)               | 1 min      | Game list + detail API       |
+| Playing (`STARTED`)               | 1 min      | Game list + detail API       |
 | Post-game (30 min after `RESULT`) | No polling | Keep final score, then clear |
 
 `chrome.alarms.periodInMinutes` minimum is 1 minute in Manifest V3.
