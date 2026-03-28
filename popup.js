@@ -171,12 +171,30 @@ function renderInningTable(game, gameData) {
   const container = document.getElementById("inning-table-container");
   container.classList.remove("hidden");
 
-  const awayInnings = gameData.awayTeamScoreByInning || [];
-  const homeInnings = gameData.homeTeamScoreByInning || [];
+  const awayInnings = [...(gameData.awayTeamScoreByInning || [])];
+  const homeInnings = [...(gameData.homeTeamScoreByInning || [])];
 
-  // "11회초" → 11: 진행 중 이닝이 배열에 아직 없을 수 있으므로 파싱
+  // API는 총점을 먼저 갱신하고 이닝 배열은 늦게 갱신한다.
+  // 총점 - 이닝합 = 현재 이닝 미반영 점수를 계산해서 채운다.
+  const awayTotal = game.awayTeamScore;
+  const homeTotal = game.homeTeamScore;
+  const awaySum = awayInnings.reduce((s, v) => s + (Number(v) || 0), 0);
+  const homeSum = homeInnings.reduce((s, v) => s + (Number(v) || 0), 0);
+
+  // "11회초" → 11
   const inningMatch = (gameData.currentInning || "").match(/(\d+)회/);
   const currentInningNum = inningMatch ? Number(inningMatch[1]) : 0;
+
+  // 배열에 없는 이닝에 미반영 점수 채우기
+  if (currentInningNum > awayInnings.length && awayTotal > awaySum) {
+    while (awayInnings.length < currentInningNum - 1) awayInnings.push("-");
+    awayInnings.push(String(awayTotal - awaySum));
+  }
+  if (currentInningNum > homeInnings.length && homeTotal > homeSum) {
+    while (homeInnings.length < currentInningNum - 1) homeInnings.push("-");
+    homeInnings.push(String(homeTotal - homeSum));
+  }
+
   const totalInnings = Math.max(
     awayInnings.length,
     homeInnings.length,
