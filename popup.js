@@ -1,6 +1,17 @@
 import { fetchTodayGames, fetchGameDetail } from "./src/api.js";
 
+let refreshTimer = null;
+
 document.addEventListener("DOMContentLoaded", async () => {
+  await loadGame();
+
+  document.getElementById("options-link").addEventListener("click", (e) => {
+    e.preventDefault();
+    chrome.runtime.openOptionsPage();
+  });
+});
+
+async function loadGame() {
   const loading = document.getElementById("loading");
   const noGame = document.getElementById("no-game");
   const gameInfo = document.getElementById("game-info");
@@ -15,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!game || game.cancel) {
       noGame.classList.remove("hidden");
+      stopRefresh();
       return;
     }
 
@@ -22,20 +34,34 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (game.statusCode === "BEFORE") {
       renderBeforeGame(game);
+      stopRefresh();
     } else {
       const detail = await fetchGameDetail(game.gameId);
       renderGame(game, detail);
+      // 경기 중이면 30초마다 자동 갱신
+      if (game.statusCode === "PLAYING") {
+        startRefresh();
+      } else {
+        stopRefresh();
+      }
     }
   } catch (err) {
     loading.textContent = "API 오류 발생";
     console.error("Popup error:", err);
   }
+}
 
-  document.getElementById("options-link").addEventListener("click", (e) => {
-    e.preventDefault();
-    chrome.runtime.openOptionsPage();
-  });
-});
+function startRefresh() {
+  if (refreshTimer) return;
+  refreshTimer = setInterval(loadGame, 30_000);
+}
+
+function stopRefresh() {
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
+}
 
 function setText(id, value) {
   document.getElementById(id).textContent = value;
