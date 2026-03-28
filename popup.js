@@ -147,7 +147,16 @@ function renderInningTable(game, gameData) {
 
   const awayInnings = gameData.awayTeamScoreByInning || [];
   const homeInnings = gameData.homeTeamScoreByInning || [];
-  const totalInnings = Math.max(awayInnings.length, homeInnings.length, 9);
+
+  // "11회초" → 11: 진행 중 이닝이 배열에 아직 없을 수 있으므로 파싱
+  const inningMatch = (gameData.currentInning || "").match(/(\d+)회/);
+  const currentInningNum = inningMatch ? Number(inningMatch[1]) : 0;
+  const totalInnings = Math.max(
+    awayInnings.length,
+    homeInnings.length,
+    currentInningNum,
+    9,
+  );
 
   // Header row
   const headerRow = document.getElementById("inning-header");
