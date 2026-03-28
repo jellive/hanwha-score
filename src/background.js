@@ -17,10 +17,12 @@ const ALARM_NAME = "checkScore";
 // Event listeners MUST be at top level for MV3
 chrome.runtime.onInstalled.addListener(() => {
   chrome.alarms.create(ALARM_NAME, { periodInMinutes: 1 });
+  checkAndUpdate(); // 설치 직후 즉시 실행
 });
 
 chrome.runtime.onStartup.addListener(() => {
   chrome.alarms.create(ALARM_NAME, { periodInMinutes: 1 });
+  checkAndUpdate(); // 브라우저 시작 시 즉시 실행
 });
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
@@ -104,7 +106,7 @@ async function checkScoreChange(game, detail) {
   const inning = detail?.result?.game?.currentInning || game.statusInfo;
 
   if (scores.hanwha > prevH && settings.notifyOnScore) {
-    sendScoreNotification({
+    await sendScoreNotification({
       title: "🦅 한화 득점!",
       message: `${scores.hanwha}:${scores.opponent} (${inning})`,
       iconUrl: scores.hanwhaLogo,
@@ -112,7 +114,7 @@ async function checkScoreChange(game, detail) {
   }
 
   if (scores.opponent > prevO && settings.notifyOnConcede) {
-    sendScoreNotification({
+    await sendScoreNotification({
       title: "한화 실점",
       message: `${scores.hanwha}:${scores.opponent} (${inning})`,
       iconUrl: scores.opponentLogo,
@@ -132,7 +134,7 @@ async function checkGameEnd(game) {
   const scores = getHanwhaScore(game);
   const won = scores.hanwha > scores.opponent;
 
-  sendGameEndNotification({
+  await sendGameEndNotification({
     title: won ? "🎉 한화 승리!" : "한화 패배",
     message: `${scores.hanwha}:${scores.opponent} vs ${scores.opponentName}`,
     iconUrl: won ? scores.hanwhaLogo : scores.opponentLogo,
@@ -159,7 +161,7 @@ async function checkPreGameNotification(game) {
       minute: "2-digit",
     });
 
-    sendGameStartNotification({
+    await sendGameStartNotification({
       title: "오늘 한화 경기",
       message: `vs ${scores.opponentName} ${time}`,
       iconUrl: scores.hanwhaLogo,
