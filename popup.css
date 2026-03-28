@@ -116,16 +116,23 @@ body {
 
 #inning-table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 11px;
   text-align: center;
 }
 
 #inning-table th,
 #inning-table td {
-  padding: 4px 6px;
+  padding: 3px 1px;
   border: 1px solid #333;
-  min-width: 24px;
+  overflow: hidden;
+}
+
+/* 팀명 열은 좀 더 넓게 */
+#inning-table th:first-child,
+#inning-table td:first-child {
+  width: 36px;
 }
 
 #inning-table th {
