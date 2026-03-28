@@ -1,0 +1,5 @@
+.DS_Store
+.omc/
+.taskmaster/
+node_modules/
+*.log

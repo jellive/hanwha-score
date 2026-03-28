@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="popup.css" />
+    <title>한화 스코어</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="loading">로딩 중...</div>
+      <div id="no-game" class="hidden">
+        <p class="no-game-text">오늘 경기 없음 🏖️</p>
+      </div>
+      <div id="game-info" class="hidden">
+        <div id="game-header">
+          <span id="stadium"></span>
+          <span id="game-time"></span>
+          <span id="status-indicator"></span>
+        </div>
+        <div id="weather-info"></div>
+        <div id="scoreboard">
+          <div class="team-row">
+            <img id="away-logo" class="team-logo" alt="" />
+            <span id="away-name" class="team-name"></span>
+            <span id="away-score" class="score"></span>
+            <span class="score-divider">:</span>
+            <span id="home-score" class="score"></span>
+            <span id="home-name" class="team-name"></span>
+            <img id="home-logo" class="team-logo" alt="" />
+          </div>
+        </div>
+        <div id="pitcher-info"></div>
+        <div id="inning-table-container" class="hidden">
+          <table id="inning-table">
+            <thead>
+              <tr id="inning-header"></tr>
+            </thead>
+            <tbody>
+              <tr id="away-innings"></tr>
+              <tr id="home-innings"></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="footer">
+      <a id="options-link" href="#">⚙️ 설정</a>
+    </div>
+    <script src="popup.js" type="module"></script>
+  </body>
+</html>

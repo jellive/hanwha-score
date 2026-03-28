@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="options.css" />
+    <title>한화 스코어 알림 - 설정</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>⚙️ 한화 스코어 알림 설정</h1>
+
+      <div class="setting-group">
+        <div class="setting-item">
+          <label for="notificationsEnabled">
+            <span class="setting-title">알림 ON/OFF</span>
+            <span class="setting-desc">모든 알림을 켜거나 끕니다</span>
+          </label>
+          <input type="checkbox" id="notificationsEnabled" />
+        </div>
+      </div>
+
+      <div class="setting-group" id="detail-settings">
+        <div class="setting-item">
+          <label for="notifyOnScore">
+            <span class="setting-title">🦅 득점 알림</span>
+            <span class="setting-desc">한화 득점 시 알림</span>
+          </label>
+          <input type="checkbox" id="notifyOnScore" />
+        </div>
+
+        <div class="setting-item">
+          <label for="notifyOnConcede">
+            <span class="setting-title">실점 알림</span>
+            <span class="setting-desc">한화 실점 시 알림</span>
+          </label>
+          <input type="checkbox" id="notifyOnConcede" />
+        </div>
+
+        <div class="setting-item">
+          <label for="notifyOnStart">
+            <span class="setting-title">경기 시작 알림</span>
+            <span class="setting-desc">경기 시작 30분 전 알림</span>
+          </label>
+          <input type="checkbox" id="notifyOnStart" />
+        </div>
+
+        <div class="setting-item">
+          <label for="notifyOnEnd">
+            <span class="setting-title">경기 종료 알림</span>
+            <span class="setting-desc">경기가 끝났을 때 알림</span>
+          </label>
+          <input type="checkbox" id="notifyOnEnd" />
+        </div>
+      </div>
+
+      <div id="save-status" class="hidden">✅ 저장됨</div>
+    </div>
+    <script src="options.js" type="module"></script>
+  </body>
+</html>

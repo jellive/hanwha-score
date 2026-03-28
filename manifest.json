@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "한화 스코어 알림",
+  "version": "1.0.0",
+  "description": "KBO 한화 이글스 실시간 스코어를 뱃지로 확인하세요 🦅",
+  "permissions": ["alarms", "notifications", "storage"],
+  "host_permissions": [
+    "https://api-gw.sports.naver.com/*",
+    "https://sports-phinf.pstatic.net/*"
+  ],
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_page": "options.html",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
