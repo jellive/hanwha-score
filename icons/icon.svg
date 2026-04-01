@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <!-- Main gradient -->
+    <radialGradient id="bg" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#FF9940"/>
+      <stop offset="60%" stop-color="#F37321"/>
+      <stop offset="100%" stop-color="#C85A10"/>
+    </radialGradient>
+    <!-- Shine -->
+    <radialGradient id="shine" cx="35%" cy="25%" r="40%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.35)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+    <!-- Shadow for text -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#7A3000" flood-opacity="0.5"/>
+    </filter>
+    <!-- Inner shadow -->
+    <filter id="innerGlow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blur"/>
+      <feOffset dx="0" dy="3"/>
+      <feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1"/>
+      <feFlood flood-color="#A04500" flood-opacity="0.3"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="244" fill="url(#bg)" stroke="#A04500" stroke-width="6"/>
+
+  <!-- Outer ring detail -->
+  <circle cx="256" cy="256" r="225" fill="none" stroke="#D86818" stroke-width="3" opacity="0.5"/>
+
+  <!-- Baseball stitching - left arc -->
+  <path d="M 130 120 Q 95 180, 100 256 Q 95 332, 130 392"
+        fill="none" stroke="#FFE8D0" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+  <!-- Left stitch marks -->
+  <g stroke="#FFE8D0" stroke-width="3.5" stroke-linecap="round" opacity="0.6">
+    <line x1="118" y1="145" x2="140" y2="152"/>
+    <line x1="108" y1="175" x2="130" y2="178"/>
+    <line x1="102" y1="208" x2="125" y2="208"/>
+    <line x1="100" y1="240" x2="123" y2="238"/>
+    <line x1="100" y1="272" x2="123" y2="274"/>
+    <line x1="102" y1="304" x2="125" y2="304"/>
+    <line x1="108" y1="337" x2="130" y2="334"/>
+    <line x1="118" y1="367" x2="140" y2="360"/>
+  </g>
+
+  <!-- Baseball stitching - right arc -->
+  <path d="M 382 120 Q 417 180, 412 256 Q 417 332, 382 392"
+        fill="none" stroke="#FFE8D0" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+  <!-- Right stitch marks -->
+  <g stroke="#FFE8D0" stroke-width="3.5" stroke-linecap="round" opacity="0.6">
+    <line x1="394" y1="145" x2="372" y2="152"/>
+    <line x1="404" y1="175" x2="382" y2="178"/>
+    <line x1="410" y1="208" x2="387" y2="208"/>
+    <line x1="412" y1="240" x2="389" y2="238"/>
+    <line x1="412" y1="272" x2="389" y2="274"/>
+    <line x1="410" y1="304" x2="387" y2="304"/>
+    <line x1="404" y1="337" x2="382" y2="334"/>
+    <line x1="394" y1="367" x2="372" y2="360"/>
+  </g>
+
+  <!-- Shine overlay -->
+  <circle cx="256" cy="256" r="240" fill="url(#shine)"/>
+
+  <!-- Bold H -->
+  <text x="256" y="290" text-anchor="middle"
+        font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="280"
+        fill="white" filter="url(#shadow)"
+        letter-spacing="-10">H</text>
+
+  <!-- Subtle top highlight arc -->
+  <path d="M 160 100 Q 256 60, 352 100"
+        fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="4" stroke-linecap="round"/>
+</svg>
