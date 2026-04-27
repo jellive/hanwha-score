@@ -26,9 +26,41 @@ describe("fetchTodayGames", () => {
     await fetchTodayGames();
     const callUrl = fetchMock.mock.calls[0][0];
     expect(callUrl).toContain("api-gw.sports.naver.com");
+    expect(callUrl).toContain("/schedule/games");
+    expect(callUrl).toContain("fields=basic");
     expect(callUrl).toContain("upperCategoryId=kbaseball");
     expect(callUrl).toContain("categoryId=kbo");
     expect(callUrl).toMatch(/date=\d{4}-\d{2}-\d{2}/);
+    // Verify URL is well-formed — not the truncated empty string a string-
+    // mutation would leave behind.
+    expect(callUrl.length).toBeGreaterThan(80);
+  });
+
+  it("returns empty array when result is missing entirely", async () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: null }),
+    });
+    const games = await fetchTodayGames();
+    expect(games).toEqual([]);
+  });
+
+  it("returns empty array when games is explicitly null in result", async () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: { games: null } }),
+    });
+    const games = await fetchTodayGames();
+    expect(games).toEqual([]);
+  });
+
+  it("calls fetch exactly once per invocation", async () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: { games: [] } }),
+    });
+    await fetchTodayGames();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
   it("returns empty array on non-2xx response (no exception bubble-up)", async () => {
