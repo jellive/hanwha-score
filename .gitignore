@@ -3,3 +3,8 @@
 .taskmaster/
 node_modules/
 *.log
+
+# Stryker mutation testing artifacts
+.stryker-tmp/
+reports/
+coverage/

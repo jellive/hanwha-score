@@ -87,6 +87,44 @@ describe("sendGameStartNotification", () => {
     expect(id).toBe("game-start");
     expect(opts.priority).toBe(1);
   });
+
+  it("declares basic notification type", async () => {
+    await sendGameStartNotification({ title: "x", message: "y" });
+    const [, opts] = create.mock.calls[0];
+    expect(opts.type).toBe("basic");
+  });
+
+  it("propagates title + message verbatim", async () => {
+    await sendGameStartNotification({
+      title: "Play 한화 ball",
+      message: "vs LG @ 18:30",
+    });
+    const [, opts] = create.mock.calls[0];
+    expect(opts.title).toBe("Play 한화 ball");
+    expect(opts.message).toBe("vs LG @ 18:30");
+  });
+
+  it("logs error when chrome.runtime.lastError fires in callback", async () => {
+    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    create.mockImplementation((id, opts, cb) => {
+      globalThis.chrome.runtime.lastError = { message: "kBytesQuota" };
+      cb && cb(id);
+      delete globalThis.chrome.runtime.lastError;
+    });
+    await sendGameStartNotification({ title: "x", message: "y" });
+    expect(errSpy).toHaveBeenCalledWith(
+      "Start notification failed:",
+      "kBytesQuota",
+    );
+    errSpy.mockRestore();
+  });
+
+  it("does NOT log when lastError is absent in callback", async () => {
+    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    await sendGameStartNotification({ title: "x", message: "y" });
+    expect(errSpy).not.toHaveBeenCalled();
+    errSpy.mockRestore();
+  });
 });
 
 describe("sendGameEndNotification", () => {
@@ -96,5 +134,60 @@ describe("sendGameEndNotification", () => {
     expect(id).toBe("game-end");
     expect(opts.priority).toBe(2);
     expect(opts.requireInteraction).toBe(true);
+  });
+
+  it("declares basic notification type", async () => {
+    await sendGameEndNotification({ title: "x", message: "y" });
+    const [, opts] = create.mock.calls[0];
+    expect(opts.type).toBe("basic");
+  });
+
+  it("propagates title + message verbatim", async () => {
+    await sendGameEndNotification({
+      title: "한화 승리",
+      message: "5:3 vs LG",
+    });
+    const [, opts] = create.mock.calls[0];
+    expect(opts.title).toBe("한화 승리");
+    expect(opts.message).toBe("5:3 vs LG");
+  });
+
+  it("logs error when chrome.runtime.lastError fires in callback", async () => {
+    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    create.mockImplementation((id, opts, cb) => {
+      globalThis.chrome.runtime.lastError = { message: "permission denied" };
+      cb && cb(id);
+      delete globalThis.chrome.runtime.lastError;
+    });
+    await sendGameEndNotification({ title: "x", message: "y" });
+    expect(errSpy).toHaveBeenCalledWith(
+      "End notification failed:",
+      "permission denied",
+    );
+    errSpy.mockRestore();
+  });
+
+  it("does NOT log when lastError is absent in callback", async () => {
+    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    await sendGameEndNotification({ title: "x", message: "y" });
+    expect(errSpy).not.toHaveBeenCalled();
+    errSpy.mockRestore();
+  });
+});
+
+describe("sendScoreNotification — chrome.runtime.lastError handling", () => {
+  it("logs error with score-specific message when lastError fires", async () => {
+    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    create.mockImplementation((id, opts, cb) => {
+      globalThis.chrome.runtime.lastError = { message: "icon too large" };
+      cb && cb(id);
+      delete globalThis.chrome.runtime.lastError;
+    });
+    await sendScoreNotification({ title: "x", message: "y" });
+    expect(errSpy).toHaveBeenCalledWith(
+      "Score notification failed:",
+      "icon too large",
+    );
+    errSpy.mockRestore();
   });
 });
