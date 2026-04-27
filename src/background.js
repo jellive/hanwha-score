@@ -11,6 +11,7 @@ import {
   setLastScore,
   setLastGameData,
 } from "./storage.js";
+import { findHanwhaGame, getHanwhaScore } from "./game.js";
 
 const ALARM_NAME = "checkScore";
 
@@ -74,20 +75,8 @@ async function checkAndUpdate() {
   }
 }
 
-function findHanwhaGame(games) {
-  return games.find((g) => g.homeTeamCode === "HH" || g.awayTeamCode === "HH");
-}
-
-function getHanwhaScore(game) {
-  const isHome = game.homeTeamCode === "HH";
-  return {
-    hanwha: isHome ? game.homeTeamScore : game.awayTeamScore,
-    opponent: isHome ? game.awayTeamScore : game.homeTeamScore,
-    opponentName: isHome ? game.awayTeamName : game.homeTeamName,
-    opponentLogo: isHome ? game.awayTeamEmblemUrl : game.homeTeamEmblemUrl,
-    hanwhaLogo: isHome ? game.homeTeamEmblemUrl : game.awayTeamEmblemUrl,
-  };
-}
+// findHanwhaGame + getHanwhaScore live in ./game.js so they can be unit-
+// tested without spinning up the chrome.* / alarms / fetch stubs.
 
 async function checkScoreChange(game, detail) {
   const settings = await getSettings();
