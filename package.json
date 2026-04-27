@@ -1,0 +1,14 @@
+{
+  "name": "hanwha-score",
+  "version": "1.0.0",
+  "description": "KBO 한화 이글스 실시간 스코어 Chrome Extension",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.18"
+  }
+}
