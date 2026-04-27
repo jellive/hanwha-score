@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { fetchTodayGames, fetchGameDetail } from "./api.js";
 
 const fetchMock = vi.fn();
@@ -6,6 +6,10 @@ const fetchMock = vi.fn();
 beforeEach(() => {
   fetchMock.mockReset();
   globalThis.fetch = fetchMock;
+});
+
+afterEach(() => {
+  vi.useRealTimers();
 });
 
 describe("fetchTodayGames", () => {
@@ -34,6 +38,39 @@ describe("fetchTodayGames", () => {
     // Verify URL is well-formed — not the truncated empty string a string-
     // mutation would leave behind.
     expect(callUrl.length).toBeGreaterThan(80);
+  });
+
+  it("formatDate produces zero-padded month and day for early-month dates", async () => {
+    // Pin January 5 2026 — month=0 → "01" (catches `getMonth() + 1`
+    // mutated to `getMonth() - 1` which would yield "-1" or "0";
+    // also catches padStart "0" → "" which would leave "1" instead of
+    // "01"). Using vi.setSystemTime is safe because vi.useRealTimers
+    // in afterEach restores the global Date for subsequent tests.
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 0, 5, 12, 0, 0));
+
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: { games: [] } }),
+    });
+    await fetchTodayGames();
+
+    const callUrl = fetchMock.mock.calls[0][0];
+    expect(callUrl).toContain("date=2026-01-05");
+  });
+
+  it("formatDate produces zero-padded for double-digit dates", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 11, 31, 18, 0, 0));
+
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: { games: [] } }),
+    });
+    await fetchTodayGames();
+
+    const callUrl = fetchMock.mock.calls[0][0];
+    expect(callUrl).toContain("date=2026-12-31");
   });
 
   it("returns empty array when result is missing entirely", async () => {
