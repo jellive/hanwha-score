@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hanwha Score - Mock Popups</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #2d2d2d;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .page-title {
+        color: #aaa;
+        font-size: 14px;
+        margin-bottom: 32px;
+        letter-spacing: 0.05em;
+      }
+
+      .mocks-row {
+        display: flex;
+        flex-direction: row;
+        gap: 24px;
+        align-items: flex-start;
+      }
+
+      .mock-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .mock-label {
+        color: #aaa;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+      }
+
+      /* ── Popup shell ── */
+      .popup {
+        width: 360px;
+        min-height: 200px;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #1a1a2e;
+        color: #e0e0e0;
+        padding: 16px;
+        border-radius: 8px;
+      }
+
+      /* ── Game header ── */
+      .game-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        padding-bottom: 8px;
+        font-size: 13px;
+        color: #aaa;
+      }
+
+      .weather-info {
+        text-align: center;
+        font-size: 11px;
+        color: #777;
+        margin-bottom: 16px;
+      }
+
+      /* ── Scoreboard ── */
+      .scoreboard {
+        margin-bottom: 16px;
+      }
+
+      .team-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .team-logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+      }
+
+      .team-logo.su {
+        background: #6b5ce7;
+      }
+
+      .team-logo.hh {
+        background: #f37321;
+      }
+
+      .team-name {
+        font-size: 15px;
+        font-weight: 600;
+        min-width: 40px;
+        text-align: center;
+      }
+
+      .score {
+        font-size: 32px;
+        font-weight: 700;
+        min-width: 36px;
+        text-align: center;
+      }
+
+      .score.winning {
+        color: #f37321;
+      }
+
+      .score.losing {
+        color: #888;
+      }
+
+      .score.neutral {
+        color: #aaa;
+      }
+
+      .score-divider {
+        font-size: 24px;
+        color: #666;
+      }
+
+      /* ── Pitcher info ── */
+      .pitcher-info {
+        text-align: center;
+        font-size: 12px;
+        color: #888;
+        margin-bottom: 12px;
+      }
+
+      /* ── Inning table ── */
+      .inning-table-container {
+        overflow-x: auto;
+        margin-bottom: 12px;
+      }
+
+      .inning-table {
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+        font-size: 11px;
+        text-align: center;
+      }
+
+      .inning-table th,
+      .inning-table td {
+        padding: 3px 1px;
+        border: 1px solid #333;
+        overflow: hidden;
+      }
+
+      .inning-table th:first-child,
+      .inning-table td:first-child {
+        width: 36px;
+      }
+
+      .inning-table th {
+        background: #2a2a3e;
+        color: #aaa;
+        font-weight: 500;
+      }
+
+      .inning-table td {
+        background: #1e1e32;
+      }
+
+      .inning-table .total-col {
+        background: #2a2a3e;
+        font-weight: 700;
+        color: #f37321;
+      }
+
+      /* ── Footer ── */
+      .footer {
+        text-align: right;
+        padding-top: 8px;
+        border-top: 1px solid #333;
+      }
+
+      .options-link {
+        color: #888;
+        text-decoration: none;
+        font-size: 12px;
+      }
+
+      /* ── Before game ── */
+      .before-info {
+        text-align: center;
+        padding: 8px 0;
+        font-size: 14px;
+        color: #aaa;
+      }
+
+      .before-info .time-highlight {
+        color: #f37321;
+        font-weight: 600;
+        font-size: 16px;
+      }
+
+      /* ── Score dash (before game) ── */
+      .score-dash {
+        font-size: 32px;
+        font-weight: 700;
+        min-width: 36px;
+        text-align: center;
+        color: #444;
+      }
+
+      /* ── Options page ── */
+      .options-popup {
+        width: 360px;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #1a1a2e;
+        color: #e0e0e0;
+        padding: 20px 16px;
+        border-radius: 8px;
+      }
+
+      .options-popup h1 {
+        font-size: 16px;
+        margin-bottom: 20px;
+        color: #f37321;
+      }
+
+      .setting-group {
+        background: #2a2a3e;
+        border-radius: 12px;
+        padding: 4px 0;
+        margin-bottom: 16px;
+      }
+
+      .setting-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 20px;
+        border-bottom: 1px solid #333;
+      }
+
+      .setting-item:last-child {
+        border-bottom: none;
+      }
+
+      .setting-title {
+        display: block;
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      .setting-desc {
+        display: block;
+        font-size: 12px;
+        color: #888;
+        margin-top: 2px;
+      }
+
+      /* iOS-style toggle (pure CSS, no checkbox input needed) */
+      .toggle {
+        width: 44px;
+        height: 24px;
+        border-radius: 12px;
+        position: relative;
+        flex-shrink: 0;
+      }
+
+      .toggle.on {
+        background: #f37321;
+      }
+
+      .toggle.off {
+        background: #555;
+      }
+
+      .toggle::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 50%;
+        top: 2px;
+        transition: transform 0.2s;
+      }
+
+      .toggle.on::after {
+        left: 2px;
+        transform: translateX(20px);
+      }
+
+      .toggle.off::after {
+        left: 2px;
+        transform: translateX(0);
+      }
+    </style>
+  </head>
+  <body>
+    <p class="page-title">
+      Hanwha Score Extension — Chrome Web Store Screenshots
+    </p>
+
+    <div class="mocks-row">
+      <!-- Mock 1: 경기 중 (Live Game) -->
+      <div class="mock-wrapper">
+        <span class="mock-label">경기 중</span>
+        <div class="popup">
+          <div class="game-header">
+            <span>대전</span>
+            <span>|</span>
+            <span>오후 02:00</span>
+            <span>|</span>
+            <span>🟢 7회초</span>
+          </div>
+
+          <div class="weather-info">18.5° 맑음</div>
+
+          <div class="scoreboard">
+            <div class="team-row">
+              <div class="team-logo su">SU</div>
+              <span class="team-name">별빛</span>
+              <span class="score losing">3</span>
+              <span class="score-divider">:</span>
+              <span class="score winning">12</span>
+              <span class="team-name">한화</span>
+              <div class="team-logo hh">HH</div>
+            </div>
+          </div>
+
+          <div class="pitcher-info">선발: 에르난데스 vs 김가상</div>
+
+          <div class="inning-table-container">
+            <table class="inning-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>1</th>
+                  <th>2</th>
+                  <th>3</th>
+                  <th>4</th>
+                  <th>5</th>
+                  <th>6</th>
+                  <th>7</th>
+                  <th>8</th>
+                  <th>9</th>
+                  <th class="total-col">R</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>별빛</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td class="total-col">3</td>
+                </tr>
+                <tr>
+                  <td>한화</td>
+                  <td>3</td>
+                  <td>0</td>
+                  <td>2</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>4</td>
+                  <td>2</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td class="total-col">12</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="footer">
+            <a class="options-link" href="#">⚙️ 설정</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mock 2: 경기 전 (Before Game) -->
+      <div class="mock-wrapper">
+        <span class="mock-label">경기 전</span>
+        <div class="popup">
+          <div class="game-header">
+            <span>⚪ 경기전</span>
+          </div>
+
+          <div style="height: 16px"></div>
+
+          <div class="scoreboard">
+            <div class="team-row">
+              <div class="team-logo su">SU</div>
+              <span class="team-name">별빛</span>
+              <span class="score-dash">-</span>
+              <span class="score-divider">:</span>
+              <span class="score-dash">-</span>
+              <span class="team-name">한화</span>
+              <div class="team-logo hh">HH</div>
+            </div>
+          </div>
+
+          <div class="before-info">
+            <span class="time-highlight">14:00 경기 예정</span>
+          </div>
+
+          <div style="height: 40px"></div>
+
+          <div class="footer">
+            <a class="options-link" href="#">⚙️ 설정</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mock 3: 설정 페이지 (Options) -->
+      <div class="mock-wrapper">
+        <span class="mock-label">설정</span>
+        <div class="options-popup">
+          <h1>⚙️ 한화 스코어 알림 설정</h1>
+
+          <div class="setting-group">
+            <div class="setting-item">
+              <label>
+                <span class="setting-title">알림 ON/OFF</span>
+                <span class="setting-desc">모든 알림을 켜거나 끕니다</span>
+              </label>
+              <div class="toggle on"></div>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <div class="setting-item">
+              <label>
+                <span class="setting-title">🦅 득점 알림</span>
+                <span class="setting-desc">한화가 득점할 때 알림</span>
+              </label>
+              <div class="toggle on"></div>
+            </div>
+            <div class="setting-item">
+              <label>
+                <span class="setting-title">실점 알림</span>
+                <span class="setting-desc">상대팀이 득점할 때 알림</span>
+              </label>
+              <div class="toggle off"></div>
+            </div>
+            <div class="setting-item">
+              <label>
+                <span class="setting-title">경기 시작 알림</span>
+                <span class="setting-desc">경기가 시작될 때 알림</span>
+              </label>
+              <div class="toggle on"></div>
+            </div>
+            <div class="setting-item">
+              <label>
+                <span class="setting-title">경기 종료 알림</span>
+                <span class="setting-desc">경기가 끝날 때 알림</span>
+              </label>
+              <div class="toggle on"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

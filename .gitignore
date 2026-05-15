@@ -8,3 +8,7 @@ node_modules/
 .stryker-tmp/
 reports/
 coverage/
+
+# Chrome Web Store packaging output (regenerated for each release)
+/hanwha-score/
+/hanwha-score.zip
