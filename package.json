@@ -1,7 +1,7 @@
 {
   "name": "hanwha-score",
   "version": "1.0.0",
-  "description": "KBO \ud55c\ud654 \uc774\uae00\uc2a4 \uc2e4\uc2dc\uac04 \uc2a4\ucf54\uc5b4 Chrome Extension",
+  "description": "KBO 한화 이글스 실시간 스코어 Chrome Extension",
   "type": "module",
   "private": true,
   "scripts": {
@@ -14,5 +14,8 @@
     "@stryker-mutator/vitest-runner": "^9.6.1",
     "@vitest/coverage-v8": "^4.1.5",
     "vitest": "^4.0.18"
+  },
+  "overrides": {
+    "fast-uri": ">=3.1.2"
   }
 }
