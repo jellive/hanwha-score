@@ -12,10 +12,11 @@
   "devDependencies": {
     "@stryker-mutator/core": "^9.6.1",
     "@stryker-mutator/vitest-runner": "^9.6.1",
-    "@vitest/coverage-v8": "^4.1.5",
-    "vitest": "^4.0.18"
+    "@vitest/coverage-v8": "^4.1.12",
+    "vitest": "^4.1.12"
   },
   "overrides": {
-    "fast-uri": ">=3.1.2"
+    "fast-uri": ">=3.1.6 <4",
+    "qs": ">=6.15.2 <7"
   }
 }
